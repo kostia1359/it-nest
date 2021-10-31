@@ -1,8 +1,8 @@
 import { IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class SelectSchemaDto {
+export class SelectTableDto {
   @IsString()
   @ApiProperty()
-  schemaName: string;
+  tableName: string;
 }

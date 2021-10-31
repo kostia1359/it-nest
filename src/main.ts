@@ -1,12 +1,16 @@
-import * as _ from 'lodash';
-
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-// async function bootstrap() {
-//   const app = await NestFactory.create(AppModule);
-//   await app.listen(3000);
-// }
-// bootstrap();
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  const config = new DocumentBuilder()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
-console.log(_.isEqual({a:10, b:20}, {b:20, a:10}))
+  app.useGlobalPipes(new ValidationPipe());
+  await app.listen(3000);
+}
+bootstrap();
