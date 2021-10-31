@@ -3,7 +3,7 @@ import { errorMessages } from '../../helpers/constants';
 import TableService from '../tableService/tableService';
 import ValidationService from '../validationService/validationService';
 import { Dictionary, Table } from '../../helpers/types';
-import { isEqual } from 'lodash';
+import * as _ from 'lodash';
 
 export default class DbService {
   private validationService: ValidationService;
@@ -67,7 +67,6 @@ export default class DbService {
     );
     this.tableService = null;
   }
-
   mergeTables(name: string) {
     if (!this.tableService) {
       throw new ValidationError(errorMessages.tableLevel.notSelected);
@@ -82,12 +81,28 @@ export default class DbService {
     );
     const tableServiceToMerge = new TableService(tableToMerge);
     if (
-      !isEqual(this.tableService.tableSchema, tableServiceToMerge.tableSchema)
+      !_.isEqual(this.tableService.tableSchema, tableServiceToMerge.tableSchema)
     ) {
       throw new ValidationError(errorMessages.tableLevel.schemasNotEqual);
     }
 
-    return [...this.tableService.table, ...tableServiceToMerge.table];
+    return [
+      ..._.differenceWith(
+        this.tableService.table,
+        tableServiceToMerge.table,
+        _.isEqual,
+      ),
+      ..._.differenceWith(
+        tableServiceToMerge.table,
+        this.tableService.table,
+        _.isEqual,
+      ),
+      ..._.intersectionWith(
+        tableServiceToMerge.table,
+        this.tableService.table,
+        _.isEqual,
+      ),
+    ];
   }
 
   get tableNames() {

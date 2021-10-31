@@ -4,7 +4,7 @@ import DbService from '../dbService/dbService';
 import { Database } from '../../helpers/types';
 
 export default class SchemaService {
-  private readonly schemas: Database[];
+  protected readonly schemas: Database[];
   dbService: DbService | null;
 
   constructor(schemas: Database[]) {

@@ -1,11 +1,28 @@
 import SchemaService from './schemaService/schemaService';
+import { Injectable } from '@nestjs/common';
+import { IStorageEngine } from '../storageService/IStorageEngine';
+import { Dictionary } from '../helpers/types';
 
-class CoreService extends SchemaService {
-  constructor(schemas) {
+@Injectable()
+export default class CoreService extends SchemaService {
+  private storageEngine: IStorageEngine;
+  constructor(storageEngine: IStorageEngine, schemas) {
     super(schemas);
+
+    this.storageEngine = storageEngine;
   }
 
-  createTable({ tableName, schema }) {
+  saveSchema(): Promise<void> {
+    return this.storageEngine.save(this.schemas);
+  }
+
+  createTable({
+    tableName,
+    schema,
+  }: {
+    tableName: string;
+    schema: Dictionary;
+  }) {
     this.dbService.createTable({ tableName, schema });
   }
 
@@ -15,6 +32,10 @@ class CoreService extends SchemaService {
 
   removeTable(name) {
     this.dbService.removeTable(name);
+  }
+
+  mergeTables(name) {
+    return this.dbService.mergeTables(name);
   }
 
   get tableNames() {
@@ -33,5 +54,3 @@ class CoreService extends SchemaService {
     return this.dbService.tableService.table;
   }
 }
-
-module.exports = CoreService;

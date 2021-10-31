@@ -2,7 +2,7 @@ import DbService from './dbService';
 import { ValidationError } from '../../helpers/errors';
 import { errorMessages } from '../../helpers/constants';
 
-describe('DbService', () => {
+describe.only('DbService', () => {
   let dbService: DbService = null;
   beforeEach(() => {
     dbService = new DbService([
@@ -141,6 +141,7 @@ describe('DbService', () => {
       });
       dbService.tableService.createRow({ field1: '1234' });
       dbService.tableService.createRow({ field1: '12345' });
+      dbService.tableService.createRow({ field1: '22' });
 
       expect(dbService.mergeTables('test')).toStrictEqual([
         { field1: '1234' },
