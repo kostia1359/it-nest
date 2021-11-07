@@ -3,7 +3,6 @@ import { Database } from '../../helpers/types';
 import { env } from '../../env';
 import { errorMessages } from '../../helpers/constants';
 import { Client } from 'pg';
-import { json } from 'express';
 
 const client = new Client({
   user: env.STORAGE_SERVICE.PSQL.USER,

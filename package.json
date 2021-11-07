@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" coreService helpers",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" --ignore-path=/home/kostya/Develop/university/course_4/it-nest/.prettierignore",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",

@@ -7,7 +7,7 @@ import PsqlStorageEngine from './storageService/psqlStorageServiceEngine/psqlSto
 const coreServiceProvider = {
   provide: CoreService,
   useFactory: async () => {
-    const storageEngine = new PsqlStorageEngine();
+    const storageEngine = new MongoDBStorageEngine();
     const schemas = await storageEngine.read();
 
     return new CoreService(storageEngine, schemas);

@@ -88,14 +88,16 @@ export class SchemaController {
     return SUCCESS_STATUS;
   }
 
-  @Get(':dbName/table/merge')
+  @Get(':dbName/table/:tableName/merge')
   @ApiOkResponse({ type: DictionaryDto })
   @ApiBadRequestResponse({ type: ApiBadRequestResponseDto })
   mergedTables(
     @Query() mergeTableQuery: DeleteTableDto,
     @Param('dbName') dbName: string,
+    @Param('tableName') tableName: string,
   ) {
     this.coreService.selectDb(dbName);
+    this.coreService.selectTable(tableName);
 
     return this.coreService.mergeTables(mergeTableQuery.tableName);
   }
