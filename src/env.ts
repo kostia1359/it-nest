@@ -86,6 +86,32 @@ const config = convict({
         env: 'STORAGE_SERVICE_PSQL_COLUMN_NAME',
       },
     },
+    AWS: {
+      KEY_ID: {
+        doc: 'aws key id',
+        format: String,
+        default: null,
+        env: 'STORAGE_SERVICE_AWS_KEY_ID',
+      },
+      SECRET_KEY: {
+        doc: 'aws secret key',
+        format: String,
+        default: null,
+        env: 'STORAGE_SERVICE_AWS_SECRET_KEY',
+      },
+      BUCKET_NAME: {
+        doc: 'aws bucket name',
+        format: String,
+        default: null,
+        env: 'STORAGE_SERVICE_AWS_BUCKET_NAME',
+      },
+      FILE_NAME: {
+        doc: 'aws bucket name',
+        format: String,
+        default: null,
+        env: 'STORAGE_SERVICE_AWS_FILE_NAME',
+      },
+    },
   },
 });
 
