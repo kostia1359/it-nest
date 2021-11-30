@@ -4,7 +4,9 @@ import TableService from '../tableService/tableService';
 import ValidationService from '../validationService/validationService';
 import { Dictionary, Table } from '../../helpers/types';
 import * as _ from 'lodash';
+import axios from 'axios';
 
+const URL = 'http://localhost:3005';
 export default class DbService {
   private validationService: ValidationService;
   private tables: Table[];
@@ -67,7 +69,7 @@ export default class DbService {
     );
     this.tableService = null;
   }
-  mergeTables(name: string) {
+  async mergeTables(name: string) {
     if (!this.tableService) {
       throw new ValidationError(errorMessages.tableLevel.notSelected);
     }
@@ -86,26 +88,12 @@ export default class DbService {
       throw new ValidationError(errorMessages.tableLevel.schemasNotEqual);
     }
 
-    return [
-      ..._.differenceWith(
-        this.tableService.table,
-        tableServiceToMerge.table,
-        _.isEqual,
-      ),
-      ..._.differenceWith(
-        tableServiceToMerge.table,
-        this.tableService.table,
-        _.isEqual,
-      ),
-      ..._.intersectionWith(
-        tableServiceToMerge.table,
-        this.tableService.table,
-        _.isEqual,
-      ),
-    ];
+    const mergedTables = await axios.post(`${URL}/mergeTables`, { table1: this.tableService.table, table2: tableServiceToMerge.table })
+    return mergedTables.data;
   }
 
   get tableNames() {
+    console.log(this.tables);
     return this.tables.map(({ tableName }) => tableName);
   }
 }

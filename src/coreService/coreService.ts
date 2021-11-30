@@ -34,7 +34,7 @@ export default class CoreService extends SchemaService {
     this.dbService.removeTable(name);
   }
 
-  mergeTables(name) {
+  async mergeTables(name) {
     return this.dbService.mergeTables(name);
   }
 

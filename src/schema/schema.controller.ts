@@ -91,15 +91,18 @@ export class SchemaController {
   @Get(':dbName/table/:tableName/merge')
   @ApiOkResponse({ type: DictionaryDto })
   @ApiBadRequestResponse({ type: ApiBadRequestResponseDto })
-  mergedTables(
+  async mergedTables(
     @Query() mergeTableQuery: DeleteTableDto,
     @Param('dbName') dbName: string,
     @Param('tableName') tableName: string,
   ) {
     this.coreService.selectDb(dbName);
     this.coreService.selectTable(tableName);
+    const mergedTables = await this.coreService.mergeTables(
+      mergeTableQuery.tableName,
+    );
 
-    return this.coreService.mergeTables(mergeTableQuery.tableName);
+    return mergedTables;
   }
 
   @Get(':dbName/table/:tableName/data')
